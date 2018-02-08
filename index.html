@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <link rel="stylesheet" type="text/css" href="./responsive.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="break">
+          <p>Break</p>
+          <div class="controls">
+            <button class="subtract" id="subtract-break">-</button>
+            <button class="duration" id="break-duration">5</button>
+            <button class="add" id="add-break">+</button>
+          </div>
+        </div>
+        <div class="session">
+          <p>WORK</p>
+          <div class="controls">
+            <button class="subtract" id="subtract-session">-</button>
+            <button class="duration" id="session-duration">25</button>
+            <button class="add" id="add-session">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="clock">
+        <div class="progress">
+          <div class="heading">Session</div>
+          <div class="timer">
+            <span class="hours"></span>
+            <span class="minutes">25</span>
+            <span class="seconds"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./js/main.js"></script>
+</html>

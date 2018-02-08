@@ -1,0 +1,37 @@
+@media screen and (max-width: 800px) {
+	.container .header .controls button {
+	  background: none;
+	  outline: none;
+	  border: none;
+	  font-size: 1.5em;
+	  width: 50px;
+	  height: 50px;
+	  font-weight: 100;
+	  color: #fff;
+	}
+
+
+	.container .header .controls .duration {
+	  font-size: 1.5em;
+	}
+
+	.container .clock .progress .timer {
+	  font-size: 2em;
+	  width: 50%;
+	  margin: 0 auto;
+	}
+
+	.container .clock .progress .heading {
+	  font-size: 2em;
+	  font-weight: 100;
+	  width: 50%;
+	  margin: 0 auto;
+	}
+
+	.container .clock {
+	  margin: 0 auto;
+	  width: 250px;
+	  height: 250px;
+	  padding: 4px;
+	}
+}
