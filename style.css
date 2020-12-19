@@ -31,7 +31,6 @@ body {
   background: none;
   outline: none;
   border: none;
-  font-size: 2rem;
   font-weight: 100;
   color: #fff;
 }
@@ -40,12 +39,12 @@ body {
   cursor: pointer;
 }
 
-.container .header .controls button.subtract {
+#decrease-break-1, #increase-break-1, #increase-work-1, #decrease-work-1 {
   vertical-align: top;
 }
 
-.container .header .controls button.add {
-  vertical-align: 3px;
+#increase-break-5, #decrease-break-5, #increase-work-5, #decrease-work-5 {
+  vertical-align: bottom;
 }
 
 .container .header .controls .duration {

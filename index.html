@@ -6,22 +6,41 @@
     <link rel="stylesheet" type="text/css" href="./responsive.css">
   </head>
   <body>
+    <div class="background-music">
+      <iframe id="youtube" width="560" height="315"  frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    
     <div class="container">
       <div class="header">
         <div class="break">
           <p>Break</p>
           <div class="controls">
-            <button class="subtract" id="subtract-break">-</button>
-            <button class="duration" id="break-duration">5</button>
-            <button class="add" id="add-break">+</button>
+            <div>
+              <button class="decrease" data-type="decrease-break" data-minutes="1">-1</button>
+              <button class="decrease" data-type="increase-break" data-minutes="1">+1</button>
+            </div>
+            <div class="duration" id="break-duration">5</div>
+            <div>
+              <button class="increase" data-type="decrease-break" data-minutes="5">-5</button>
+              <button class="increase" data-type="increase-break" data-minutes="5">+5</button>
+            </div>
+            
           </div>
         </div>
         <div class="session">
           <p>WORK</p>
           <div class="controls">
-            <button class="subtract" id="subtract-session">-</button>
-            <button class="duration" id="session-duration">25</button>
-            <button class="add" id="add-session">+</button>
+            <div> 
+              <button class="decrease" data-type="decrease-work" data-minutes="1">-1</button>
+              <button class="decrease" data-type="increase-work" data-minutes="1">+1</button>
+            </div>
+            <div class="duration" id="session-duration">25</div>
+            <div>
+              <button class="increase" data-type="decrease-work" data-minutes="5">-5</button>
+              <button class="increase" data-type="increase-work" data-minutes="5">+5</button>
+            </div>
           </div>
         </div>
       </div>

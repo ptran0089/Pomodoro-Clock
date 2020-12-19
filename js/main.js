@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  const status = {
+  const app = {
     started: false,
     paused: false,
     onBreak: false,
@@ -13,141 +13,148 @@
     breakTimerId: null
   };
 
-  const pomodoro = {};
-
-  pomodoro.init = function() {
-    workTimer.setNewWorkSession();
-    workTimer.startWork();
-    status.started = !status.started;
+  app.init = function() {
+    workTimer.setNewSession();
+    workTimer.start();
+    app.started = !app.started;
   };
 
+  // Work Timer
   const workTimer = {
     init() {
-      if (status.paused) {
-        this.startWork();
+      if (app.paused) {
+        workTimer.start();
       } else {
-        this.pauseWork();
+        workTimer.pause();
       }
-      status.paused = !status.paused;
+      app.paused = !app.paused;
     },
 
-    increaseInterval(minutes = 1) {
-      status.workInterval += minutes;
-      workTimer.setNewWorkSession();
+    increase(minutes) {
+      app.workInterval += minutes
+      workTimer.setNewSession();
     },
 
-    decreaseInterval() {
-      if (status.workInterval > 1) {
-        status.workInterval--;
-        workTimer.setNewWorkSession();
-      }
+    decrease(minutes) {
+      if (minutes < app.workInterval) app.workInterval -= minutes;
+      workTimer.setNewSession();
     },
 
     getInterval() {
-      return status.workInterval;
+      return app.workInterval;
     },
 
-    startWork() {
-      const totalSeconds = status.workInterval * 60;
+    start() {
+      const totalSeconds = app.workInterval * 60;
+      document.getElementById("youtube").src = 'https://www.youtube.com/embed/videoseries?list=PLcGkkXtask_clYSk4gXUAjfpquAo_lE9W';
+    
+      app.workTimerId = setInterval(function () {
+        app.workTimeLeft--;
+        view.renderTimer(app.workTimeLeft, totalSeconds, 'WORK!');
 
-      status.workTimerId = setInterval(function () {
-        status.workTimeLeft--;
-        view.renderTimer(status.workTimeLeft, totalSeconds, 'WORK!');
-
-        if (status.workTimeLeft === 0) {
-          clearInterval(status.workTimerId);
-          breakTimer.setNewBreakSession();
-          breakTimer.startBreak();
-          status.onBreak = true;
+        if (app.workTimeLeft === 0) {
+          clearInterval(app.workTimerId);
+          breakTimer.setNewSession();
+          breakTimer.start();
+          app.onBreak = true;
         }
       }, 1000);
     },
 
-    pauseWork() {
-      clearInterval(status.workTimerId);
+    pause() {
+      clearInterval(app.workTimerId);
     },
 
-    setNewWorkSession() {
-      status.workTimeLeft = status.workInterval * 60;
-      view.renderIntervals(!status.onBreak ? status.workInterval : null);
+    setNewSession() {
+      // const workSound = new Audio("js/sound/work.wav");
+      // workSound.play();
+
+      app.workTimeLeft = app.workInterval * 60;
+      view.renderIntervals(!app.onBreak ? app.workInterval : null);
     }
   };
 
+  // Break Timer
   const breakTimer = {
     init() {
-      if (status.paused) {
-        this.startBreak();
+      if (app.paused) {
+        breakTimer.start();
       } else {
-        this.pauseBreak();
+        breakTimer.pause();
       }
-      status.paused = !status.paused;
+      app.paused = !app.paused;
     },
 
-    increaseInterval(minutes = 1) {
-      status.breakInterval += minutes;
-      breakTimer.setNewBreakSession();
+    increase(minutes) {
+      app.breakInterval += minutes;
+      breakTimer.setNewSession();
     },
 
-    decreaseInterval() {
-      if (status.breakInterval > 1) {
-        status.breakInterval--;
-        breakTimer.setNewBreakSession();
-      }
+    decrease(minutes) {
+      if (minutes < app.breakInterval) app.breakInterval -= minutes;
+      breakTimer.setNewSession();
     },
 
     getInterval() {
-      return status.breakInterval;
+      return app.breakInterval;
     },
 
-    startBreak() {
-      const totalSeconds = status.breakInterval * 60;
+    start() {
+      const totalSeconds = app.breakInterval * 60;
 
-      status.breakTimerId = setInterval(function () {
-        status.breakTimeLeft--;
-        view.renderTimer(status.breakTimeLeft, totalSeconds, 'BREAK!');
+      app.breakTimerId = setInterval(function () {
+        app.breakTimeLeft--;
+        view.renderTimer(app.breakTimeLeft, totalSeconds, 'BREAK!');
 
-        if (status.breakTimeLeft === 0) {
-          clearInterval(status.breakTimerId);
-          workTimer.setNewWorkSession();
-          workTimer.startWork();
-          status.onBreak = false;
+        if (app.breakTimeLeft === 0) {
+          clearInterval(app.breakTimerId);
+          workTimer.setNewSession();
+          workTimer.start();
+          app.onBreak = false;
         }
       }, 1000);
     },
 
-    pauseBreak() {
-      clearInterval(status.breakTimerId);
+    pause() {
+      clearInterval(app.breakTimerId);
     },
 
-    setNewBreakSession() {
-      status.breakTimeLeft = status.breakInterval * 60;
-      view.renderIntervals(status.onBreak ? status.breakInterval : null);
+    setNewSession() {
+      // const breakSound = new Audio("js/sound/break.wav");
+      // breakSound.play();
+
+      app.breakTimeLeft = app.breakInterval * 60;
+      view.renderIntervals(app.onBreak ? app.breakInterval : null);
     }
   };
 
+  // Views
   const view = {
     init() {
+      // Add listeners to interval buttons
       const buttons = Array.from(document.querySelectorAll('button'));
 
       for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener('click', function () {
-          if (status.paused || !status.started) {
-            const action = buttons[i].id;
-
-            view.controls[action]();
+          if (app.paused || !app.started) {
+            const action = buttons[i].dataset.type;
+            const minutes = parseInt(buttons[i].dataset.minutes);
+            
+            // action object to control timer
+            view.controls[action](minutes);
           }
         });
       }
 
       document.querySelector('.clock').addEventListener('click', function () {
-        if (status.started) {
-          if (status.onBreak) {
+        if (app.started) {
+          if (app.onBreak) {
             breakTimer.init();
           } else {
             workTimer.init();
           }
         } else {
-          pomodoro.init();
+          app.init();
         }
       });
     },
@@ -160,15 +167,15 @@
 
       document.querySelector('.heading').innerText = sessionLabel;
       document.querySelector('.timer').innerText = '' + (hours === 0 ? '' : hours + ':') + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-      document.querySelector('.progress').style.background = 'linear-gradient(#333333 ' + percent + '%, ' + (status.onBreak ? '#dd1638' : '#99CC00') + ' 0%)';
+      document.querySelector('.progress').style.background = 'linear-gradient(#333333 ' + percent + '%, ' + (app.onBreak ? '#dd1638' : '#99CC00') + ' 0%)';
     },
 
     renderIntervals(value) {
       const workInterval = workTimer.getInterval();
       const breakInterval = breakTimer.getInterval();
 
-      document.querySelector('#break-duration').innerText = status.breakInterval;
-      document.querySelector('#session-duration').innerText = status.workInterval;
+      document.querySelector('#break-duration').innerText = app.breakInterval;
+      document.querySelector('#session-duration').innerText = app.workInterval;
       if (value) {
         document.querySelector('.timer').innerText = value;
       }
@@ -177,16 +184,10 @@
 
 
   view.controls = {
-    'subtract-session': workTimer.decreaseInterval,
-    'session-duration': function() {
-        workTimer.increaseInterval(5);
-      },
-    'add-session': workTimer.increaseInterval,
-    'subtract-break': breakTimer.decreaseInterval,
-    'break-duration': function() {
-      breakTimer.increaseInterval(5)
-    },
-    'add-break': breakTimer.increaseInterval
+    'decrease-work': (minutes) => workTimer.decrease(minutes),
+    'increase-work': (minutes) => workTimer.increase(minutes),
+    'decrease-break': (minutes) => breakTimer.decrease(minutes),
+    'increase-break': (minutes) => breakTimer.increase(minutes)
   };
 
   view.init();
