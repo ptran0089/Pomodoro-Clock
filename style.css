@@ -1,5 +1,6 @@
 body {
   background: #333333;
+  position: relative;
 }
 
 .container {
@@ -11,6 +12,21 @@ body {
   text-transform: uppercase;
 }
 
+.background-music iframe {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  right: 100px;
+}
+
+.music-options {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  left: 100px;
+  color: white;
+}
+
 .container .header {
   text-align: center;
   min-width: 215px;
@@ -19,11 +35,11 @@ body {
 
 .container .header .break {
   display: inline-block;
-  margin: 0 3px 10px 5px;
+  margin: 0 50px 10px 5px;
 }
 
 .container .header .session {
-  margin: 0 3px 10px 5px;
+  margin: 0 0 10px 5px;
   display: inline-block;
 }
 

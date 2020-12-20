@@ -7,11 +7,21 @@
   </head>
   <body>
     <div class="background-music">
-      <iframe id="youtube" width="560" height="315"  frameborder="0"
+      <iframe id="youtube" width="560" height="315" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
     </div>
-    
+  
+    <div class="music-options">
+      <h1>Background Music</h1>
+      <button data-type="baroque">Baroque</button>
+      <button data-type="coffeeshop">Coffeshop Ambience</button>
+      <button data-type="jazz">Coffeeshop Jazz</button>
+      <button data-type="lofi">Lofi</button>
+      <button data-type="nature">Nature</button>
+      <button data-type="natureMusic">Nature Music</button>
+    </div>
+  
     <div class="container">
       <div class="header">
         <div class="break">
@@ -26,13 +36,13 @@
               <button class="increase" data-type="decrease-break" data-minutes="5">-5</button>
               <button class="increase" data-type="increase-break" data-minutes="5">+5</button>
             </div>
-            
+  
           </div>
         </div>
         <div class="session">
           <p>WORK</p>
           <div class="controls">
-            <div> 
+            <div>
               <button class="decrease" data-type="decrease-work" data-minutes="1">-1</button>
               <button class="decrease" data-type="increase-work" data-minutes="1">+1</button>
             </div>

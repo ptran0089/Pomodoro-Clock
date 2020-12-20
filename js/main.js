@@ -1,7 +1,8 @@
 'use strict';
 
-(function() {
+(function () {
   const app = {
+    backgroundMusic: false,
     started: false,
     paused: false,
     onBreak: false,
@@ -13,17 +14,20 @@
     breakTimerId: null
   };
 
-  app.backgroundMusic = {
-    'baroque': 'https://www.youtube.com/embed/videoseries?list=PLcGkkXtask_clYSk4gXUAjfpquAo_lE9W?autoplay=1',
-    'coffeeshop': 'list=PLkmb1BBi8y92eep3jdYtbxHKvh-EHxSV4&index=3?autoplay=1'
-
-  }
-
-  app.init = function() {
+  app.init = function () {
     workTimer.setNewSession();
     workTimer.start();
     app.started = !app.started;
   };
+
+  app.youtubeMusic = {
+    'baroque': 'https://www.youtube.com/embed/videoseries?list=PLcGkkXtask_clYSk4gXUAjfpquAo_lE9W&autoplay=1&loop=1',
+    'coffeeshop': 'https://www.youtube.com/embed/videoseries?list=PLkmb1BBi8y92eep3jdYtbxHKvh-EHxSV4&index=1&autoplay=1&loop=1',
+    'jazz': 'https://www.youtube.com/embed/videoseries?list=PLLv31kAgkBvaKNPxDFeJS6ILMEKFO-bdZ&autoplay=1&loop=1',
+    'lofi': 'https://www.youtube.com/embed/videoseries?list=PLrSDK7cEP7LTtxogYMVhI_4YJ_Vak3bKp&autoplay=1&loop=1',
+    'nature': 'https://www.youtube.com/embed/videoseries?list=PL6FB3Q57vUC8of2Ihv5YWDsER5PDMAL0y&autoplay=1&loop=1',
+    'natureMusic': 'https://www.youtube.com/embed/videoseries?list=PLG4LQy3y02pKtdoW79LIEPSrA76WZSUz0&autoplay=1&loop=1'
+  }
 
   // Work Timer
   const workTimer = {
@@ -51,9 +55,11 @@
     },
 
     start() {
+      const breakAlert = new Audio("javascripts/sound/break.wav");
+
       const totalSeconds = app.workInterval * 60;
-      document.getElementById("youtube").src = 'https://www.youtube.com/embed/videoseries?list=PLcGkkXtask_clYSk4gXUAjfpquAo_lE9W?autoplay=1';
-    
+      // document.getElementById("youtube").src = 'https://www.youtube.com/embed/videoseries?list=PLcGkkXtask_clYSk4gXUAjfpquAo_lE9W&autoplay=1&loop=1';
+
       app.workTimerId = setInterval(function () {
         app.workTimeLeft--;
         view.renderTimer(app.workTimeLeft, totalSeconds, 'WORK!');
@@ -62,6 +68,7 @@
           clearInterval(app.workTimerId);
           breakTimer.setNewSession();
           breakTimer.start();
+          breakAlert.play();
           app.onBreak = true;
         }
       }, 1000);
@@ -72,9 +79,6 @@
     },
 
     setNewSession() {
-      // const workSound = new Audio("js/sound/work.wav");
-      // workSound.play();
-
       app.workTimeLeft = app.workInterval * 60;
       view.renderIntervals(!app.onBreak ? app.workInterval : null);
     }
@@ -107,6 +111,7 @@
 
     start() {
       const totalSeconds = app.breakInterval * 60;
+      const workAlert = new Audio("javascripts/sound/work.wav");
 
       app.breakTimerId = setInterval(function () {
         app.breakTimeLeft--;
@@ -116,6 +121,7 @@
           clearInterval(app.breakTimerId);
           workTimer.setNewSession();
           workTimer.start();
+          workAlert.play();
           app.onBreak = false;
         }
       }, 1000);
@@ -126,9 +132,6 @@
     },
 
     setNewSession() {
-      // const breakSound = new Audio("js/sound/break.wav");
-      // breakSound.play();
-
       app.breakTimeLeft = app.breakInterval * 60;
       view.renderIntervals(app.onBreak ? app.breakInterval : null);
     }
@@ -145,13 +148,26 @@
           if (app.paused || !app.started) {
             const action = buttons[i].dataset.type;
             const minutes = parseInt(buttons[i].dataset.minutes);
-            
+
             // action object to control timer
             view.controls[action](minutes);
           }
         });
       }
 
+      const musicOptions = document.querySelector('.music-options');
+      const musicButtons = Array.from(musicOptions.querySelectorAll('button'));
+
+      for (let i = 0; i < musicButtons.length; i++) {
+        musicButtons[i].addEventListener('click', function () {
+          const musicType = musicButtons[i].dataset.type;
+          const youtubeLink = app.youtubeMusic[musicType];
+
+          document.getElementById("youtube").src = youtubeLink;
+        });
+      }
+
+      // Add listener to start/pause clock
       document.querySelector('.clock').addEventListener('click', function () {
         if (app.started) {
           if (app.onBreak) {
