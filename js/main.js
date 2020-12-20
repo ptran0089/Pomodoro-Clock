@@ -55,7 +55,7 @@
     },
 
     start() {
-      const breakAlert = new Audio("javascripts/sound/break.wav");
+      const breakAlert = new Audio("https://github.com/ptran0089/Pomodoro-Clock/tree/master/js/sound/break.wav");
 
       const totalSeconds = app.workInterval * 60;
       // document.getElementById("youtube").src = 'https://www.youtube.com/embed/videoseries?list=PLcGkkXtask_clYSk4gXUAjfpquAo_lE9W&autoplay=1&loop=1';
@@ -111,7 +111,7 @@
 
     start() {
       const totalSeconds = app.breakInterval * 60;
-      const workAlert = new Audio("javascripts/sound/work.wav");
+      const workAlert = new Audio("https://github.com/ptran0089/Pomodoro-Clock/tree/master/js/sound/work.wav");
 
       app.breakTimerId = setInterval(function () {
         app.breakTimeLeft--;
