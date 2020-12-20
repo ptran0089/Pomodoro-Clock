@@ -13,6 +13,12 @@
     breakTimerId: null
   };
 
+  app.backgroundMusic = {
+    'baroque': 'https://www.youtube.com/embed/videoseries?list=PLcGkkXtask_clYSk4gXUAjfpquAo_lE9W?autoplay=1',
+    'coffeeshop': 'list=PLkmb1BBi8y92eep3jdYtbxHKvh-EHxSV4&index=3?autoplay=1'
+
+  }
+
   app.init = function() {
     workTimer.setNewSession();
     workTimer.start();
@@ -46,7 +52,7 @@
 
     start() {
       const totalSeconds = app.workInterval * 60;
-      document.getElementById("youtube").src = 'https://www.youtube.com/embed/videoseries?list=PLcGkkXtask_clYSk4gXUAjfpquAo_lE9W';
+      document.getElementById("youtube").src = 'https://www.youtube.com/embed/videoseries?list=PLcGkkXtask_clYSk4gXUAjfpquAo_lE9W?autoplay=1';
     
       app.workTimerId = setInterval(function () {
         app.workTimeLeft--;
